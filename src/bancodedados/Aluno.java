@@ -27,10 +27,11 @@ public class Aluno {
     }
     
     public int insere(Connection conn) throws SQLException{
-        PreparedStatement stat = conn.prepareStatement("INSERT INTO ALUNOS(NOME, RA) "
-                                                + "VALUES (?,?)");
-        stat.setString(1, nome);
-        stat.setInt(2, ra);
+        PreparedStatement stat = conn.prepareStatement("INSERT INTO ALUNOS(ID, NOME, RA) "
+                                                + "VALUES (?, ?,?)");
+        stat.setInt(1, Aluno.getProximoId(conn));
+        stat.setString(2, nome);
+        stat.setInt(3, ra);
         int linhas = 0;
         
         try{
@@ -41,6 +42,21 @@ public class Aluno {
         
         return linhas;
 
+    }
+    
+    public static int getProximoId(Connection conn) throws SQLException{
+        String select = "SELECT MAX(ID) FROM ALUNOS";
+        Statement stat = conn.createStatement();
+        ResultSet rs = stat.executeQuery(select);
+        
+        int id = 0;
+        if (rs.next())
+            id = rs.getInt(1);
+        
+        id++;
+        System.out.println(id);
+        return id;
+       
     }
     
     public static Aluno getAluno(Connection conn, int ra) throws SQLException{
