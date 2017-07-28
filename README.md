@@ -42,7 +42,7 @@ Crie uma classe `Materia` com os atribuitos (a partir da tabela MATERIAS)
 Crie os métodos de acesso e alteração de dados semelhante aos existentes na classe `Aluno`
 
 ## Exercício 3
-Execute o seguinte SQL para alterar a tabela `ALUNOS`
+1. Execute o seguinte SQL para alterar a tabela `ALUNOS`
 
 ```sql
 ALTER TABLE ALUNOS
@@ -50,4 +50,6 @@ ADD COLUMN FK_MATERIA INT CONSTRAINT MATERIA_FK REFERENCES MATERIAS;
 ```
 *Agora um aluno deve ter uma matéria*
 
-Crie um atributo 
+2. Crie um atributo `materia` na classe `Aluno`
+
+3. Altere os métodos `inserir` e `alterar` para permitir a inserção e atualização da matéria do aluno.
