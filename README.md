@@ -42,6 +42,7 @@ Crie uma classe `Materia` com os atribuitos (a partir da tabela MATERIAS)
 Crie os métodos de acesso e alteração de dados semelhante aos existentes na classe `Aluno`
 
 ## Exercício 3
+
 1. Execute o seguinte SQL para alterar a tabela `ALUNOS`
 
 ```sql
@@ -53,3 +54,7 @@ ADD COLUMN FK_MATERIA INT CONSTRAINT MATERIA_FK REFERENCES MATERIAS;
 2. Crie um atributo `materia` na classe `Aluno`
 
 3. Altere os métodos `inserir` e `alterar` para permitir a inserção e atualização da matéria do aluno.
+
+## Exercício 4
+
+Na classe `Aluno` crie um método `static` chamado `obterAlunosMateria` que recebe uma `Materia` e devolve um `ArrayList` dos alunos daquela matéria
