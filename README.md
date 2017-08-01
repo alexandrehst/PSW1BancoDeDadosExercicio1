@@ -4,8 +4,10 @@ Este exercício contém um modelo inicial de um objeto de negócio (Aluno) que t
 **ATENÇÃO** Execute os seguintes comandos para baixar o commit correto:
 
 ```bash
-git clone 
+git clone https://github.com/alexandrehst/PSW1BancoDeDadosExercicio1.git
+git checkout b57e3b3cd878c85aaf53f5a5179e48a09cdc8cc0
 ```
+Essa é a posição inicial do exercício.
 
 ## Configurações
 
