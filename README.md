@@ -1,6 +1,12 @@
 # PSW1BancoDeDadosExercicio1
 Este exercício contém um modelo inicial de um objeto de negócio (Aluno) que tem conhecimento da estrutura do banco de dados e é responsável por todas as operações no banco.
 
+**ATENÇÃO** Execute os seguintes comandos para baixar o commit correto:
+
+```bash
+git clone 
+```
+
 ## Configurações
 
 Copie o código abaixo para criar as tabelas do banco de dados:
