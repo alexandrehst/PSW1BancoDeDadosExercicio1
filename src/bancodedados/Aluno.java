@@ -18,33 +18,74 @@ import java.util.ArrayList;
  * @author alexandretorres
  */
 public class Aluno {
+    private int id;
     private String nome;
-    private int ra;    
+    private int ra;  
+    private int idMateria;
+    private Materia materia;
     
     public Aluno(int ra, String nome){
         this.ra = ra;
         this.nome = nome;
     }
     
-    public int insere(Connection conn) throws SQLException{
-        PreparedStatement stat = conn.prepareStatement("INSERT INTO ALUNOS(ID, NOME, RA) "
-                                                + "VALUES (?, ?,?)");
-        stat.setInt(1, Aluno.getProximoId(conn));
-        stat.setString(2, nome);
-        stat.setInt(3, ra);
-        int linhas = 0;
-        
-        try{
-            linhas = stat.executeUpdate();
-        }catch(SQLIntegrityConstraintViolationException e){
-            System.out.println("Aluno " + getRa() + " já existe");
-        }
-        
-        return linhas;
-
+    public Aluno(int id, int ra, String nome){
+        this(ra, nome);
+        this.id = id;
     }
     
-    public static int getProximoId(Connection conn) throws SQLException{
+    public Aluno( int ra, String nome, Materia materia){
+        this(ra, nome);
+        this.materia = materia;
+        this.idMateria = materia.getId();
+    }
+    
+    public int insere(Connection conn) throws SQLException{
+        PreparedStatement stat = conn.prepareStatement("INSERT INTO ALUNOS(ID, NOME, RA, FK_MATERIA) "
+                                                + "VALUES (?, ?,?, ?)");
+        this.id = Aluno.getProximoId(conn);
+        stat.setInt(1, this.id);
+        stat.setString(2, nome);
+        stat.setInt(3, ra);
+        stat.setInt(4, idMateria);
+        int linhas = 0;
+        
+        linhas = stat.executeUpdate();
+
+        
+        return linhas;
+    }
+
+    public int altera(Connection conn) throws SQLException{
+        String sql = "UPDATE ALUNOS SET RA = ?, NOME = ?, FK_MATERIA = ? WHERE ID = ?";
+        PreparedStatement stat = conn.prepareStatement(sql);
+        
+        stat.setInt(1, ra);
+        stat.setString(2, nome);
+        stat.setInt(3, idMateria);
+        stat.setInt(4, this.id);
+        
+        int linhas = 0;
+
+        linhas = stat.executeUpdate();
+        
+        return linhas;
+    }
+    
+    public int exclui(Connection conn) throws SQLException{
+        String sql = "DELETE FROM ALUNOS WHERE ID = ?";
+        PreparedStatement stat = conn.prepareStatement(sql);
+
+        stat.setInt(1   , this.id);
+        
+        int linhas = 0;
+
+        linhas = stat.executeUpdate();
+        
+        return linhas;
+    }
+    
+    private static int getProximoId(Connection conn) throws SQLException{
         String select = "SELECT MAX(ID) FROM ALUNOS";
         Statement stat = conn.createStatement();
         ResultSet rs = stat.executeQuery(select);
@@ -67,7 +108,8 @@ public class Aluno {
         
         while (rs.next()) {
             String nome = rs.getString("NOME");
-            a = new Aluno(ra, nome);
+            int id = rs.getInt("ID");
+            a = new Aluno(id, ra, nome);
             break;
         }
         
@@ -115,6 +157,22 @@ public class Aluno {
      */
     public void setRa(int ra) {
         this.ra = ra;
+    }
+        
+    public Materia getMateria(Connection conn) throws SQLException{
+        if (this.materia != null)
+            return this.materia;
+        
+        if (this.idMateria == 0)
+            return null;
+        
+        return Materia.getMateria(conn, idMateria);
+    }
+    
+    public void setMateria(Connection conn, Materia materia) throws SQLException{
+        this.idMateria = materia.getId();
+        this.materia = materia;
+        this.altera(conn);        
     }
     
     
